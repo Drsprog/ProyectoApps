@@ -107,12 +107,12 @@ public class Registro extends AppCompatActivity {
 //        }
 //    }
 //
-//    private void limpiarcajas() {
-//        etNom.setText("");
-//        etApe.setText("");
-//        etCor.setText("");
-//        etCon.setText("");
-//    }
+    private void limpiarcajas() {
+        etNom.setText("");
+        etApe.setText("");
+        etCor.setText("");
+        etCon.setText("");
+    }
 
     private void validacion() {
         nom = etNom.getText().toString();
@@ -122,6 +122,7 @@ public class Registro extends AppCompatActivity {
         if (!nom.isEmpty()&&!ape.isEmpty()&&!cor.isEmpty()&&!con.isEmpty()){
             if (con.length() >= 6) {
                 RegistarCuenta();
+                limpiarcajas();
             }
             else{
                 Toast.makeText(Registro.this,"La contraseña debe tener al menos 6 caracteres",Toast.LENGTH_SHORT).show();
