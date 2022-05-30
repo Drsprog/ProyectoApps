@@ -85,10 +85,10 @@ public class Registro extends AppCompatActivity {
 
     }
     public void pruebaSumar(View view){
-        int a,b,c;
+        int a,b,n;
         a=10;
         b=20;
-        c=a+b;
+        n=a+b;
     }
 
 
