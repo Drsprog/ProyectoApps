@@ -80,9 +80,15 @@ public class Registro extends AppCompatActivity {
 
                 validacion();
             }
+
         });
 
-
+    }
+    public void pruebaSumar(View view){
+        int a,b,c;
+        a=10;
+        b=20;
+        c=a+b;
     }
 
 
