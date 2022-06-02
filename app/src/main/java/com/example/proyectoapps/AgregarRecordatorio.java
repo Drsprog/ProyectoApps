@@ -1,5 +1,6 @@
 package com.example.proyectoapps;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -13,20 +14,30 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.example.proyectoapps.Model.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgregarRecordatorio extends AppCompatActivity {
 
     Button btnCan,btnAgre;
     TextView tvFec,tvHor;
-    EditText etLug;
+    EditText etLug,etNot;
     Switch swHor,swFec,swLugar;
+    String not,fec,hor,lug;
 
     FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
 
     @Override
@@ -36,12 +47,16 @@ public class AgregarRecordatorio extends AppCompatActivity {
 
         btnAgre=findViewById(R.id.btnGuardar);
         btnCan=findViewById(R.id.btnCancelar);
+        etNot=findViewById(R.id.etNota);
         tvFec=findViewById(R.id.tvFecha);
         tvHor=findViewById(R.id.tvHora);
         etLug=findViewById(R.id.etLugar);
         swFec=findViewById(R.id.switchFecha);
         swHor=findViewById(R.id.switchHora);
         swLugar=findViewById(R.id.switchLugar);
+        firebaseAuth=FirebaseAuth.getInstance();
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+
 
         btnAgre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +77,35 @@ public class AgregarRecordatorio extends AppCompatActivity {
         btnAgre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                RegistarRecordatorio();
             }
         });
 
     }
+
+    private void RegistarRecordatorio() {
+        String id= firebaseAuth.getCurrentUser().getUid();
+        not = etNot.getText().toString();
+        fec = tvFec.getText().toString();
+        hor = tvHor.getText().toString();
+        lug = etLug.getText().toString();
+
+
+        Map<String,Object> DatoMod=new HashMap<>();
+
+        DatoMod.put("not_REC",not);
+        DatoMod.put("fec_REC",fec);
+        DatoMod.put("hor_REC",hor);
+        DatoMod.put("lug_REC",lug);
+
+        databaseReference.child("Usuario").child(id).child("rec_USU").push().setValue(DatoMod).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent i= new Intent(getApplicationContext(),Menu.class);
+                startActivity(i);
+            }
+        });
+        }
 
     public void AgregarFecha(View view){
         Calendar calendario=Calendar.getInstance();

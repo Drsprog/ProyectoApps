@@ -151,11 +151,6 @@ public class ModificarPerfil extends AppCompatActivity {
 
 
 
-
-
-
-
-
     }
 
     private void cargarFoto() {
