@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -19,18 +18,13 @@ import android.widget.Toast;
 import com.example.proyectoapps.Model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Registro extends AppCompatActivity {
 
@@ -43,9 +37,12 @@ public class Registro extends AppCompatActivity {
     Button btnRegis;
 
     String nom,ape,con,cor;
+    String url="";
 
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
+
+    static int bandera=0;
 
 
     @Override
@@ -67,8 +64,7 @@ public class Registro extends AppCompatActivity {
         etCon=findViewById(R.id.etContraseña);
         btnRegis= findViewById(R.id.btnRegistrar);
 
-        lstCuentas=findViewById(R.id.lvCuentas);
-        lstCuentas.setSelector(R.color.black);
+        etNom.requestFocus();
 
         btnRegis.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,15 +80,10 @@ public class Registro extends AppCompatActivity {
         });
 
     }
-    public void pruebaSumar(View view){
-        int a,b,n;
-        a=10;
-        b=20;
-        n=a+b;
-    }
 
 
-//    public void Registrar(View view){
+
+    //    public void Registrar(View view){
 //        nom = etNom.getText().toString();
 //        ape = etApe.getText().toString();
 //        cor = etCor.getText().toString();
@@ -112,6 +103,7 @@ public class Registro extends AppCompatActivity {
 //        }
 //    }
 //
+
     private void limpiarcajas() {
         etNom.setText("");
         etApe.setText("");
@@ -153,12 +145,15 @@ public class Registro extends AppCompatActivity {
                     u.setAPE_USU(ape);
                     u.setCOR_USU(cor);
                     u.setCON_USU(con);
+                    u.setURL_IMG(url);
 
                     databaseReference.child("Usuario").child(u.getIDE_USU()).setValue(u).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task2) {
                             if(task2.isSuccessful()){
-                                startActivity(new Intent(Registro.this,MenuPrincipal.class));
+                                Intent band= new Intent(Registro.this,Login.class);
+                                band.putExtra("band", String.valueOf(bandera));
+                                startActivity(band);
                                 finish();
                             }
                             else{
