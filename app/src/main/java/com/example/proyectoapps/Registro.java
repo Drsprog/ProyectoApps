@@ -92,7 +92,6 @@ public class Registro extends AppCompatActivity {
     }
 
 
-
 //    public void Registrar(View view){
 //        nom = etNom.getText().toString();
 //        ape = etApe.getText().toString();
