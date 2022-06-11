@@ -39,7 +39,7 @@ public class Recuperar_cambiar extends AppCompatActivity {
         setContentView(R.layout.activity_recuperar_cambiar);
 
         etCorreoR=findViewById(R.id.etRecuperar);
-        btnRec=findViewById(R.id.btnRecuperar);
+        btnRec=findViewById(R.id.btnRecuperarCon);
         tvTit=findViewById(R.id.tvTitRec);
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
@@ -55,7 +55,7 @@ public class Recuperar_cambiar extends AppCompatActivity {
             public void onClick(View view) {
                 email=etCorreoR.getText().toString();
 
-                if(email.isEmpty()){
+                if(!email.isEmpty()){
                     RecuperarContraseña();
                 }
                 else{
@@ -66,29 +66,30 @@ public class Recuperar_cambiar extends AppCompatActivity {
         });
     }
 
-    public void getUpdateInfo(String id){
-
-        databaseReference.child("Usuario").child(id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    Usuario u = new Usuario();
-                    u.setIDE_USU(firebaseAuth.getCurrentUser().getUid());
-                    u.setNOM_USU(snapshot.child("nom_USU").getValue().toString());
-                    u.setAPE_USU(snapshot.child("ape_USU").getValue().toString());
-                    u.setCOR_USU(snapshot.child("cor_USU").getValue().toString());
-                    u.setCON_USU(snapshot.child("con_USU").getValue().toString());
-
-                    databaseReference.child("Usuario").child(u.getIDE_USU()).setValue(u);
-                    }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
+//    public void getUpdateInfo(String id){
+//
+//        databaseReference.child("Usuario").child(id).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists()){
+//                    Usuario u = new Usuario();
+//                    u.setIDE_USU(firebaseAuth.getCurrentUser().getUid());
+//                    u.setNOM_USU(snapshot.child("nom_USU").getValue().toString());
+//                    u.setAPE_USU(snapshot.child("ape_USU").getValue().toString());
+//                    u.setCOR_USU(snapshot.child("cor_USU").getValue().toString());
+//                    u.setCON_USU(snapshot.child("con_USU").getValue().toString());
+//                    u.setURL_IMG(snapshot.child("url_IMG").getValue().toString());
+//
+//                    databaseReference.child("Usuario").child(u.getIDE_USU()).setValue(u);
+//                    }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
 
 
     private void RecuperarContraseña() {
@@ -115,6 +116,6 @@ public class Recuperar_cambiar extends AppCompatActivity {
             }
         });
 
-        getUpdateInfo(id);
+//        getUpdateInfo(id);
     }
 }

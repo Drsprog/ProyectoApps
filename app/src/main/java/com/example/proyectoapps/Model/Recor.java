@@ -1,15 +1,42 @@
 package com.example.proyectoapps.Model;
 
-public class Recordatorio {
+public class Recor {
 
     private String NOT_REC;
     private String FEC_REC;
     private String HOR_REC;
     private String LUG_REC;
     private String URL_IMG;
-    private String CON_USU;
+    private String EST_REC;
+    private String IDE_REC;
 
-    public Recordatorio() {
+    public Recor() {
+    }
+
+    public Recor(String NOT_REC, String FEC_REC, String HOR_REC, String LUG_REC, String URL_IMG, String EST_REC, String IDE_REC) {
+        this.NOT_REC = NOT_REC;
+        this.FEC_REC = FEC_REC;
+        this.HOR_REC = HOR_REC;
+        this.LUG_REC = LUG_REC;
+        this.URL_IMG = URL_IMG;
+        this.EST_REC = EST_REC;
+        this.IDE_REC = IDE_REC;
+    }
+
+    public String getIDE_REC() {
+        return IDE_REC;
+    }
+
+    public void setIDE_REC(String IDE_REC) {
+        this.IDE_REC = IDE_REC;
+    }
+
+    public String getEST_REC() {
+        return EST_REC;
+    }
+
+    public void setEST_REC(String EST_REC) {
+        this.EST_REC = EST_REC;
     }
 
     public String getNOT_REC() {
@@ -52,22 +79,6 @@ public class Recordatorio {
         this.URL_IMG = URL_IMG;
     }
 
-    public String getCON_USU() {
-        return CON_USU;
-    }
-
-    public void setCON_USU(String CON_USU) {
-        this.CON_USU = CON_USU;
-    }
-
-    public Recordatorio(String NOT_REC, String FEC_REC, String HOR_REC, String LUG_REC, String URL_IMG, String CON_USU) {
-        this.NOT_REC = NOT_REC;
-        this.FEC_REC = FEC_REC;
-        this.HOR_REC = HOR_REC;
-        this.LUG_REC = LUG_REC;
-        this.URL_IMG = URL_IMG;
-        this.CON_USU = CON_USU;
-    }
 
 
 }

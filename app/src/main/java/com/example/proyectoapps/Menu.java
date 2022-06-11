@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -14,18 +16,23 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
+import com.example.proyectoapps.Adaptadores.AdapterRecordatorio;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-public class Menu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Menu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
     FloatingActionButton btnAgregar;
 
+
     ActionBarDrawerToggle toggle;
+    Fragment Principal,Completados,Atrasados,Ajustes,Ayuda;
+//    Fragment FragActual=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,13 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         toggle= setUpDrawerToggle();
         drawerLayout.addDrawerListener(toggle);
 
+        Principal= new Pagina_Principal();
+        Completados= new CompletadosFragment();
+        Atrasados= new AtrasadosFragment();
+        Ayuda= new AyudaFragment();
+        Ajustes= new AjustesFragment();
+
+
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,16 +66,10 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(i);
             }
         });
-
-
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        getMenuInflater().inflate(R.menu.busqueda_menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+
 
     private ActionBarDrawerToggle setUpDrawerToggle(){
         return new ActionBarDrawerToggle(
@@ -92,10 +100,17 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
     private void selectItemNav(MenuItem item) {
         FragmentManager fm=getSupportFragmentManager();
         FragmentTransaction ft= fm.beginTransaction();
+//        boolean Seleccionado=false;
         switch (item.getItemId()){
-            case R.id.nav_home:
+            case R.id.nav_home:{
                 ft.replace(R.id.content,new Pagina_Principal()).commit();
+//                FragActual= new Pagina_Principal();
+//                Seleccionado=true;
+//                if(Seleccionado){
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.content,FragActual).commit();
+//                }
                 break;
+            }
             case R.id.nav_completados:
                 ft.replace(R.id.content,new CompletadosFragment()).commit();
                 break;
@@ -127,4 +142,5 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

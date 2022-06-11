@@ -14,12 +14,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.example.proyectoapps.Model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,13 +25,15 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AgregarRecordatorio extends AppCompatActivity {
+public class ModificarInfoRec extends AppCompatActivity {
 
-    Button btnCan,btnAgre;
-    TextView tvFec,tvHor;
-    EditText etLug,etNot;
+    TextView tvFecMod, tvHorMod;
+    EditText etLugMod,etNotMod;
+    String tit,fec,hor,lug,ide;
+    String titDat,fecDat,horDat,lugDat,ideDat;
+    Button btnCan, btnMod;
+
     Switch swHor,swFec,swLugar;
-    String not,fec,hor,lug;
 
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
@@ -42,20 +41,31 @@ public class AgregarRecordatorio extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agregar_recordatorio);
+        setContentView(R.layout.activity_modificar_info_rec);
 
-        btnAgre=findViewById(R.id.btnGuardar);
-        btnCan=findViewById(R.id.btnCancelar);
-        etNot=findViewById(R.id.etNota);
-        tvFec=findViewById(R.id.tvFecha);
-        tvHor=findViewById(R.id.tvHora);
-        etLug=findViewById(R.id.etLugar);
-        swFec=findViewById(R.id.switchFecha);
-        swHor=findViewById(R.id.switchHora);
-        swLugar=findViewById(R.id.switchLugar);
+        etNotMod=findViewById(R.id.etNotaMd);
+        tvFecMod=findViewById(R.id.tvMdFecha);
+        tvHorMod=findViewById(R.id.tvMdHora);
+        etLugMod=findViewById(R.id.etMdLugar);
+        btnCan=findViewById(R.id.btnCancelarMd);
+        btnMod=findViewById(R.id.btnGuarCamb);
+        swHor=findViewById(R.id.switchHoraMod);
+        swFec=findViewById(R.id.switchFechaMod);
+        swLugar=findViewById(R.id.switchLugarMod);
+
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
+        tit=getIntent().getStringExtra("titRec");
+        fec=getIntent().getStringExtra("fechaRec");
+        hor=getIntent().getStringExtra("horaRec");
+        lug=getIntent().getStringExtra("lugRec");
+        ide=getIntent().getStringExtra("ideRec");
+
+        etNotMod.setText(tit);
+        tvFecMod.setText(fec);
+        tvHorMod.setText(hor);
+        etLugMod.setText(lug);
 
         btnCan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,41 +75,38 @@ public class AgregarRecordatorio extends AppCompatActivity {
             }
         });
 
-        btnAgre.setOnClickListener(new View.OnClickListener() {
+        btnMod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RegistarRecordatorio();
+                String id= firebaseAuth.getCurrentUser().getUid();
+                titDat = etNotMod.getText().toString();
+                fecDat = tvFecMod.getText().toString();
+                horDat = tvHorMod.getText().toString();
+                lugDat = etLugMod.getText().toString();
+
+
+                Map<String,Object> DatoMod=new HashMap<>();
+
+                DatoMod.put("not_REC",titDat);
+                DatoMod.put("fec_REC",fecDat);
+                DatoMod.put("hor_REC",horDat);
+                DatoMod.put("lug_REC",lugDat);
+                DatoMod.put("img_REC","");
+                DatoMod.put("est_REC","Pendiente");
+
+                databaseReference.child("Usuario").child(id).child("rec_USU").child(ide).updateChildren(DatoMod).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Intent i= new Intent(getApplicationContext(),Menu.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    }
+                });
             }
         });
-
     }
-
-    private void RegistarRecordatorio() {
-        String id= firebaseAuth.getCurrentUser().getUid();
-        not = etNot.getText().toString();
-        fec = tvFec.getText().toString();
-        hor = tvHor.getText().toString();
-        lug = etLug.getText().toString();
-
-
-        Map<String,Object> DatoMod=new HashMap<>();
-
-        DatoMod.put("not_REC",not);
-        DatoMod.put("fec_REC",fec);
-        DatoMod.put("hor_REC",hor);
-        DatoMod.put("lug_REC",lug);
-        DatoMod.put("img_REC","");
-        DatoMod.put("est_REC","Pendiente");
-
-        databaseReference.child("Usuario").child(id).child("rec_USU").push().setValue(DatoMod).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Intent i= new Intent(AgregarRecordatorio.this,Menu.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        }
 
     public void AgregarFecha(View view){
         Calendar calendario=Calendar.getInstance();
@@ -107,31 +114,31 @@ public class AgregarRecordatorio extends AppCompatActivity {
         int mes= calendario.get(Calendar.MONTH);
         int dia= calendario.get(Calendar.DAY_OF_MONTH);
 
-        if(view.getId()==R.id.switchFecha){
+        if(view.getId()==R.id.switchFechaMod){
 
             if(swFec.isChecked()){
 
-                DatePickerDialog dpd= new DatePickerDialog(AgregarRecordatorio.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd= new DatePickerDialog(ModificarInfoRec.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day_of_month) {
                         if(month<=8){
                             if(day_of_month<=9){
                                 String fechaCal="0" + day_of_month + "/0" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
+                                tvFecMod.setText(fechaCal);
                             }
                             else{
                                 String fechaCal= day_of_month + "/0" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
+                                tvFecMod.setText(fechaCal);
                             }
                         }
                         else{
                             if(day_of_month<=9){
                                 String fechaCal="0" + day_of_month + "/" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
+                                tvFecMod.setText(fechaCal);
                             }
                             else{
                                 String fechaCal= day_of_month + "/" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
+                                tvFecMod.setText(fechaCal);
                             }
                         }
                     }
@@ -146,8 +153,8 @@ public class AgregarRecordatorio extends AppCompatActivity {
 //              String mes1=String.valueOf(mes);
 //              String dia1=String.valueOf(dia);
 //              tvFec.setText(anio1+mes1+dia1);
-                tvFec.setText("");
-                tvFec.setHint("No asignado");
+                tvFecMod.setText("");
+                tvFecMod.setHint("No asignado");
             }
         }
     }
@@ -156,29 +163,29 @@ public class AgregarRecordatorio extends AppCompatActivity {
         Calendar calendario=Calendar.getInstance();
         int hora= calendario.get(Calendar.HOUR_OF_DAY);
         int min= calendario.get(Calendar.MINUTE);
-        if(view.getId()==R.id.switchHora){
+        if(view.getId()==R.id.switchHoraMod){
             if(swHor.isChecked()){
-                TimePickerDialog tmd= new TimePickerDialog(AgregarRecordatorio.this, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tmd= new TimePickerDialog(ModificarInfoRec.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour_of_day, int minute) {
                         if(hour_of_day<=9){
                             if(minute<=9){
                                 String fechaHor= "0" + hour_of_day + ":0" + minute ;
-                                tvHor.setText(fechaHor);
+                                tvHorMod.setText(fechaHor);
                             }
                             else{
                                 String fechaHor= "0" + hour_of_day + ":" + minute ;
-                                tvHor.setText(fechaHor);
+                                tvHorMod.setText(fechaHor);
                             }
                         }
                         else{
                             if(minute<=9){
                                 String fechaHor= hour_of_day + ":0" + minute ;
-                                tvHor.setText(fechaHor);
+                                tvHorMod.setText(fechaHor);
                             }
                             else{
                                 String fechaHor= hour_of_day + ":" + minute ;
-                                tvHor.setText(fechaHor);
+                                tvHorMod.setText(fechaHor);
                             }
                         }
                     }
@@ -188,19 +195,19 @@ public class AgregarRecordatorio extends AppCompatActivity {
             else{
                 hora=0;
                 min=0;
-                tvHor.setText("");
-                tvHor.setHint("No asignado");
+                tvHorMod.setText("");
+                tvHorMod.setHint("No asignado");
             }
         }
     }
 
     public void AgregarLugar(View view){
-        if(view.getId()==R.id.switchLugar){
+        if(view.getId()==R.id.switchLugarMod){
             if(swLugar.isChecked()){
-                etLug.setVisibility(View.VISIBLE);
+                etLugMod.setVisibility(View.VISIBLE);
             }
             else{
-                etLug.setVisibility(View.INVISIBLE);
+                etLugMod.setVisibility(View.INVISIBLE);
             }
         }
     }

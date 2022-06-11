@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppReminder">
         <activity
+            android:name=".ModificarInfoRec"
+            android:exported="false" />
+        <activity
+            android:name=".EditarRecordatorio"
+            android:exported="false" />
+        <activity
             android:name=".ModificarPerfil"
             android:exported="false" />
         <activity

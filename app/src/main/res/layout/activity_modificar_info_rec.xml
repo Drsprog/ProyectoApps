@@ -23,7 +23,7 @@
 
 
         <EditText
-            android:id="@+id/etNota"
+            android:id="@+id/etNotaMd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
@@ -60,7 +60,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/tvHora"
+            android:id="@+id/tvMdHora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -69,7 +69,7 @@
             android:textSize="20dp" />
 
         <Switch
-            android:id="@+id/switchHora"
+            android:id="@+id/switchHoraMod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -98,7 +98,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/tvFecha"
+            android:id="@+id/tvMdFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -107,7 +107,7 @@
             android:textSize="20dp" />
 
         <Switch
-            android:id="@+id/switchFecha"
+            android:id="@+id/switchFechaMod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -137,10 +137,11 @@
             android:textSize="20dp" />
 
         <Switch
-            android:id="@+id/switchLugar"
+            android:id="@+id/switchLugarMod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:checked="true"
             android:onClick="AgregarLugar"
             />
 
@@ -151,7 +152,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir recordatorio"
+        android:text="Modificar Recordatorio"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="24dp"
@@ -163,22 +164,22 @@
         app:layout_constraintVertical_bias="0.039" />
 
     <Button
-        android:id="@+id/btnGuardar"
+        android:id="@+id/btnGuarCamb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
         android:backgroundTint="#2EC9FF"
-        android:text="Guardar"
+        android:text="Guardar Cambios"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnCancelar"
+        app:layout_constraintEnd_toStartOf="@+id/btnCancelarMd"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLugar"
+        app:layout_constraintTop_toBottomOf="@+id/etMdLugar"
         app:layout_constraintVertical_bias="0.587" />
 
     <Button
-        android:id="@+id/btnCancelar"
+        android:id="@+id/btnCancelarMd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
@@ -188,8 +189,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnGuardar"
-        app:layout_constraintTop_toBottomOf="@+id/etLugar"
+        app:layout_constraintStart_toEndOf="@+id/btnGuarCamb"
+        app:layout_constraintTop_toBottomOf="@+id/etMdLugar"
         app:layout_constraintVertical_bias="0.587" />
 
     <FrameLayout
@@ -214,7 +215,7 @@
 
     <EditText
 
-        android:id="@+id/etLugar"
+        android:id="@+id/etMdLugar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -224,7 +225,6 @@
         android:paddingEnd="10dp"
         android:textColor="@color/black"
         android:textSize="20dp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

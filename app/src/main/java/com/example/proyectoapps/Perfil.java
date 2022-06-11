@@ -4,13 +4,16 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -84,7 +87,7 @@ public class Perfil extends AppCompatActivity {
         Button btnCamCon=findViewById(R.id.btnCambiarCon);
         Button btnSubFot=findViewById(R.id.btnCambiarP);
         progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("Subiendo foto...");
+        progressDialog.setMessage("Cargando perfil...");
         progressDialog.setCancelable(false);
 
 
@@ -239,18 +242,26 @@ public class Perfil extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     String url= snapshot.child("url_IMG").getValue().toString();
+                    if (url.isEmpty()){
+                        Context c = getApplicationContext();
+                        int id = c.getResources().getIdentifier("ic_baseline_account_circle_24", "drawable", c.getPackageName());
+                        imgView.setImageResource(id);
 
-                    Glide.with(imgView.getContext())
-                            .load(url)
-                            .centerCrop()
-                            .into(imgView);
+                    }
+                    else{
+                        Glide.with(imgView.getContext())
+                                .load(url)
+                                .centerCrop()
+                                .into(imgView);
+
+                    }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
     }
 
@@ -273,25 +284,19 @@ public class Perfil extends AppCompatActivity {
                                     String filepath=uri.toString();
                                     HashMap<String,Object> obj= new HashMap<>();
                                     obj.put("url_IMG",filepath);
-                                    databaseReference.child("Usuario").child(firebaseAuth.getCurrentUser().getUid()).updateChildren(obj).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-
-                                        }
-                                    });
+                                    databaseReference.child("Usuario").child(firebaseAuth.getCurrentUser().getUid()).updateChildren(obj);
                                 }
                             });
                         }
                      }
                  });
-                imgView.setImageURI(data.getData());
-                selectedImage=data.getData();
-
+//                imgView.setImageURI(data.getData());
+//                selectedImage=data.getData();
              }
         }
     }
 
-    //    @Override
+//    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
 //        if(requestCode==GALLERY_INTENT&&resultCode==RESULT_OK){
