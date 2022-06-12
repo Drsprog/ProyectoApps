@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AgregarRecordatorio">
-
+    tools:context=".InfoRecComp">
 
     <FrameLayout
         android:id="@+id/Lin1"
@@ -23,7 +22,7 @@
 
 
         <TextView
-            android:id="@+id/tvNotaModRec"
+            android:id="@+id/tvNotaCompRec"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
@@ -60,7 +59,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/tvHoraModRec"
+            android:id="@+id/tvHoraCompRec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -93,7 +92,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/tvFechaModRec"
+            android:id="@+id/tvFechaCompRec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -126,7 +125,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/tvLugarModRec"
+            android:id="@+id/tvLugarCompRec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -141,7 +140,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recordatorio"
+        android:text="Recordatorio completado"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="24dp"
@@ -152,22 +151,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.039" />
 
+
     <Button
-        android:id="@+id/btnModRec"
+        android:id="@+id/btnRestRec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#2EC9FF"
-        android:text="Modificar"
+        android:text="Restaurar"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnEliRecMod"
+        app:layout_constraintEnd_toStartOf="@+id/btnCanRecComp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
-        app:layout_constraintVertical_bias="0.408" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
     <Button
-        android:id="@+id/btnCanRecMod"
+        android:id="@+id/btnCanRecComp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#2EC9FF"
@@ -176,23 +175,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnEliRecMod"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
-        app:layout_constraintVertical_bias="0.408" />
-
-    <Button
-        android:id="@+id/btnEliRecMod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#2EC9FF"
-        android:text="Eliminar"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnCanRecMod"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnModRec"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
-        app:layout_constraintVertical_bias="0.408" />
+        app:layout_constraintStart_toEndOf="@+id/btnRestRec"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
     <FrameLayout
         android:id="@+id/frameLayout4"

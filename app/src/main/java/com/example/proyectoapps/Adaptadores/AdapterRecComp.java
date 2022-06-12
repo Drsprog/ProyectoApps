@@ -2,7 +2,7 @@ package com.example.proyectoapps.Adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.ColorSpace;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,28 +10,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyectoapps.AtrasadosFragment;
 import com.example.proyectoapps.EditarRecordatorio;
-import com.example.proyectoapps.Menu;
+import com.example.proyectoapps.InfoRecComp;
 import com.example.proyectoapps.Model.Recor;
-import com.example.proyectoapps.Pagina_Principal;
 import com.example.proyectoapps.R;
-import com.example.proyectoapps.Recuperar_cambiar;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,8 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AdapterRecordatorio extends RecyclerView.Adapter<AdapterRecordatorio.ViewHolder>
-implements View.OnClickListener{
+public class AdapterRecComp extends RecyclerView.Adapter<AdapterRecComp.ViewHolder> {
 
     LayoutInflater inflater;
     ArrayList<Recor> model;
@@ -50,7 +39,7 @@ implements View.OnClickListener{
     ArrayList<Recor> modelOriginal;
 
 
-    public AdapterRecordatorio(Context context, ArrayList<Recor> model){
+    public AdapterRecComp(Context context, ArrayList<Recor> model){
         this.inflater=LayoutInflater.from(context);
         this.model=model;
         firebaseAuth=FirebaseAuth.getInstance();
@@ -62,14 +51,8 @@ implements View.OnClickListener{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_recordatorio,parent,false);
-        view.setOnClickListener(this);
-        return new ViewHolder(view);
-    }
-
-
-    public void setOnClickListener(View.OnClickListener listener){
-        this.listener=listener;
+        View view = inflater.inflate(R.layout.list_rec_completados,parent,false);
+        return new AdapterRecComp.ViewHolder(view);
     }
 
     @Override
@@ -80,7 +63,6 @@ implements View.OnClickListener{
         String horavenc=model.get(position).getHOR_REC();
         String lugrec=model.get(position).getLUG_REC();
         String iderec=model.get(position).getIDE_REC();
-        String estado=model.get(position).getEST_REC();
 
         holder.titulo.setText(tit);
         holder.fecha.setText(fechavenc);
@@ -88,7 +70,7 @@ implements View.OnClickListener{
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(holder.itemView.getContext(), EditarRecordatorio.class);
+                Intent intent= new Intent(holder.itemView.getContext(), InfoRecComp.class);
                 intent.putExtra("titRec",tit);
                 intent.putExtra("fechaRec",fechavenc );
                 intent.putExtra("horaRec",horavenc);
@@ -101,51 +83,22 @@ implements View.OnClickListener{
         holder.btnComp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Map<String,Object> DatoMod=new HashMap<>();
-
-                DatoMod.put("est_REC","Completado");
-
                 FirebaseDatabase.getInstance().getReference().child("Usuario")
                         .child(FirebaseAuth.getInstance().getUid()).child("rec_USU")
-                        .child(model.get(position).getIDE_REC()).updateChildren(DatoMod).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .child(model.get(position).getIDE_REC()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
-                                    String valor="0";
-                                    Intent intent= new Intent(holder.itemView.getContext(), Menu.class);
+                                    Intent intent= new Intent(holder.itemView.getContext(), EditarRecordatorio.class);
                                     model.remove(model.get(position));
-                                    if (estado.equals("Pendiente")||estado.equals("Atrasado")){
-                                        valor="1";
-                                    }
-                                    intent.putExtra("valor",valor);
                                     notifyDataSetChanged();
                                     Toast.makeText(view.getContext(), "Recordatorio completado",Toast.LENGTH_SHORT).show();
                                     holder.itemView.getContext().startActivity(intent);
                                 }
                             }
-                });
+                        });
             }
         });
-
-//        holder.btnComp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                FirebaseDatabase.getInstance().getReference().child("Usuario")
-//                        .child(FirebaseAuth.getInstance().getUid()).child("rec_USU")
-//                        .child(model.get(position).getIDE_REC()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                if (task.isSuccessful()){
-//                                    model.remove(model.get(position));
-//                                    notifyDataSetChanged();
-//                                    Toast.makeText(view.getContext(), "Recordatorio completado",Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
-//            }
-//        });
-
     }
 
     public void filtrado(String txtBuscar){
@@ -158,10 +111,10 @@ implements View.OnClickListener{
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 List<Recor> collection=model.stream()
                         .filter(i -> i.getNOT_REC()
-                        .toLowerCase().contains(txtBuscar.toLowerCase()))
+                                .toLowerCase().contains(txtBuscar.toLowerCase()))
                         .collect(Collectors.toList());
-                    model.clear();
-                    model.addAll(collection);
+                model.clear();
+                model.addAll(collection);
             }
             else {
                 model.clear();
@@ -175,29 +128,25 @@ implements View.OnClickListener{
         notifyDataSetChanged();
     }
 
-
     @Override
     public int getItemCount() {
         return model.size();
     }
 
-    @Override
-    public void onClick(View view) {
-        if(listener!=null){
-            listener.onClick(view);
-        }
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         Button btnComp;
-        TextView titulo, fecha, tvVacio1,tvVacio2;
+        TextView titulo, fecha;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            btnComp=itemView.findViewById(R.id.btnCompletar);
-            titulo=itemView.findViewById(R.id.tvTituloReco);
-            fecha=itemView.findViewById(R.id.tvFecRec);
+            btnComp=itemView.findViewById(R.id.btnCompletarComp);
+            titulo=itemView.findViewById(R.id.tvTituloRecoComp);
+            fecha=itemView.findViewById(R.id.tvFecRecComp);
+
+            titulo.setPaintFlags(titulo.getPaintFlags()|Paint.STRIKE_THRU_TEXT_FLAG);
+            fecha.setPaintFlags(fecha.getPaintFlags()|Paint.STRIKE_THRU_TEXT_FLAG);
+
         }
     }
 }

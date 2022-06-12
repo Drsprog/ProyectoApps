@@ -1,5 +1,6 @@
 package com.example.proyectoapps;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,13 +30,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Pagina_Principal extends Fragment implements SearchView.OnQueryTextListener {
 
-
-    List<String> AllValues;
     RecyclerView recyclerViewPersonas;
     ArrayList<Recor> listaRecordatorio;
 
@@ -43,6 +48,8 @@ public class Pagina_Principal extends Fragment implements SearchView.OnQueryText
     FirebaseAuth firebaseAuth;
     String nota,fecha,hora,lugar,imagen,estado,ide;
     AdapterRecordatorio adapterRecordatorio;
+    Calendar actual= Calendar.getInstance();
+    Calendar fecRecCalendar=Calendar.getInstance();
 
     TextView tvVac;
 
@@ -50,11 +57,94 @@ public class Pagina_Principal extends Fragment implements SearchView.OnQueryText
         // Required empty public constructor
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        cargarLista();
+        actualizarEstados();
+//        cargarLista();
         super.onCreate(savedInstanceState);
+    }
+
+    private void actualizarEstados() {
+        firebaseAuth=FirebaseAuth.getInstance();
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+        String id= firebaseAuth.getCurrentUser().getUid();
+
+        SimpleDateFormat formato= new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date fechaActual= actual.getTime();
+        String strFecActu= formato.format(fechaActual);
+        try {
+            Date fecActualPar=formato.parse(strFecActu);
+            actual.setTime(fecActualPar);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        databaseReference.child("Usuario").child(id).child("rec_USU").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()){
+                    for(DataSnapshot ds: task.getResult().getChildren()){
+                        ide= ds.getKey();
+                        Recor rec= new Recor();
+                        rec.setIDE_REC(ide);
+
+                        nota=ds.child("not_REC").getValue().toString();
+                        fecha= ds.child("fec_REC").getValue().toString();
+                        hora= ds.child("hor_REC").getValue().toString();
+                        estado=ds.child("est_REC").getValue().toString();
+                        lugar=ds.child("lug_REC").getValue().toString();
+
+                        rec.setNOT_REC(nota);
+                        rec.setFEC_REC(fecha);
+                        rec.setHOR_REC(hora);
+                        rec.setEST_REC(estado);
+                        rec.setLUG_REC(lugar);
+
+                        try {
+                            Date fecRecDate=formato.parse(rec.getFEC_REC()+ " " +rec.getHOR_REC());
+                            fecRecCalendar.setTime(fecRecDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (actual.equals(fecRecCalendar)&&!rec.getEST_REC().equals("Completado"))
+                        {
+                            Map<String,Object> DatoMod=new HashMap<>();
+
+                            DatoMod.put("est_REC","Atrasado");
+                            databaseReference.child("Usuario").child(id).child("rec_USU")
+                                    .child(rec.getIDE_REC()).updateChildren(DatoMod);
+                            rec.setEST_REC("Atrasado");
+                        }
+                        else{
+                            if(actual.after(fecRecCalendar)&&!rec.getEST_REC().equals("Completado")){
+                                Map<String,Object> DatoMod=new HashMap<>();
+
+                                DatoMod.put("est_REC","Atrasado");
+                                databaseReference.child("Usuario").child(id).child("rec_USU")
+                                        .child(rec.getIDE_REC()).updateChildren(DatoMod);
+                                rec.setEST_REC("Atrasado");
+                            }
+                        }
+                        if (rec.getEST_REC().equals("Pendiente"))
+                        {
+                            listaRecordatorio.add(new Recor(rec.getNOT_REC(),rec.getFEC_REC(),rec.getHOR_REC(),rec.getLUG_REC(), rec.getURL_IMG(), rec.getEST_REC(), rec.getIDE_REC()));
+                            recyclerViewPersonas.setLayoutManager(new LinearLayoutManager(getContext()));
+                            adapterRecordatorio= new AdapterRecordatorio(getContext(),listaRecordatorio);
+                            adapterRecordatorio.notifyDataSetChanged();
+                            recyclerViewPersonas.setAdapter(adapterRecordatorio);
+                        }
+                    }
+                    if(recyclerViewPersonas.getAdapter() == null){
+                            tvVac.setVisibility(View.VISIBLE);
+                    }
+                }
+                else{
+                    tvVac.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
@@ -66,7 +156,6 @@ public class Pagina_Principal extends Fragment implements SearchView.OnQueryText
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
         tvVac=view.findViewById(R.id.tvVacio);
-
         return view;
     }
 
@@ -74,7 +163,6 @@ public class Pagina_Principal extends Fragment implements SearchView.OnQueryText
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
         String id= firebaseAuth.getCurrentUser().getUid();
-
         databaseReference.child("Usuario").child(id).child("rec_USU").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -82,7 +170,6 @@ public class Pagina_Principal extends Fragment implements SearchView.OnQueryText
                     for(DataSnapshot ds: task.getResult().getChildren()){
                         ide= ds.getKey();
                         Recor rec= new Recor();
-
                         rec.setIDE_REC(ide);
 
                         nota= ds.child("not_REC").getValue().toString();
@@ -99,12 +186,14 @@ public class Pagina_Principal extends Fragment implements SearchView.OnQueryText
                         rec.setURL_IMG(imagen);
                         rec.setEST_REC(estado);
 
-                        listaRecordatorio.add(new Recor(rec.getNOT_REC(),rec.getFEC_REC(),rec.getHOR_REC(),rec.getLUG_REC(), rec.getURL_IMG(), rec.getEST_REC(), rec.getIDE_REC()));
-                        recyclerViewPersonas.setLayoutManager(new LinearLayoutManager(getContext()));
-                        adapterRecordatorio= new AdapterRecordatorio(getContext(),listaRecordatorio);
-                        adapterRecordatorio.notifyDataSetChanged();
-                        recyclerViewPersonas.setAdapter(adapterRecordatorio);
-
+                        if (rec.getEST_REC().equals("Pendiente"))
+                        {
+                            listaRecordatorio.add(new Recor(rec.getNOT_REC(),rec.getFEC_REC(),rec.getHOR_REC(),rec.getLUG_REC(), rec.getURL_IMG(), rec.getEST_REC(), rec.getIDE_REC()));
+                            recyclerViewPersonas.setLayoutManager(new LinearLayoutManager(getContext()));
+                            adapterRecordatorio= new AdapterRecordatorio(getContext(),listaRecordatorio);
+                            adapterRecordatorio.notifyDataSetChanged();
+                            recyclerViewPersonas.setAdapter(adapterRecordatorio);
+                        }
                     }
                 }
             }

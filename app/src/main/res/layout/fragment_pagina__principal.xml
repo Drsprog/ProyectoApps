@@ -6,9 +6,9 @@
     android:orientation="vertical"
     tools:context=".Pagina_Principal">
 
-
-
     <androidx.recyclerview.widget.RecyclerView
+        android:clipToPadding="false"
+        android:paddingBottom="90dp"
         android:layout_gravity="start|center_horizontal"
         android:id="@+id/recycleViewRec"
         android:layout_width="match_parent"

@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class AgregarRecordatorio extends AppCompatActivity {
 
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
+    Calendar calendario=Calendar.getInstance();
+    Calendar actual=Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +105,10 @@ public class AgregarRecordatorio extends AppCompatActivity {
         }
 
     public void AgregarFecha(View view){
-        Calendar calendario=Calendar.getInstance();
-        int anio= calendario.get(Calendar.YEAR);
-        int mes= calendario.get(Calendar.MONTH);
-        int dia= calendario.get(Calendar.DAY_OF_MONTH);
+
+        int anio= actual.get(Calendar.YEAR);
+        int mes= actual.get(Calendar.MONTH);
+        int dia= actual.get(Calendar.DAY_OF_MONTH);
 
         if(view.getId()==R.id.switchFecha){
 
@@ -114,26 +117,14 @@ public class AgregarRecordatorio extends AppCompatActivity {
                 DatePickerDialog dpd= new DatePickerDialog(AgregarRecordatorio.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day_of_month) {
-                        if(month<=8){
-                            if(day_of_month<=9){
-                                String fechaCal="0" + day_of_month + "/0" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
-                            }
-                            else{
-                                String fechaCal= day_of_month + "/0" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
-                            }
-                        }
-                        else{
-                            if(day_of_month<=9){
-                                String fechaCal="0" + day_of_month + "/" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
-                            }
-                            else{
-                                String fechaCal= day_of_month + "/" + (month+1) + "/" + year;
-                                tvFec.setText(fechaCal);
-                            }
-                        }
+
+                        calendario.set(Calendar.DAY_OF_MONTH,day_of_month);
+                        calendario.set(Calendar.MONTH,month);
+                        calendario.set(Calendar.YEAR,year);
+
+                        SimpleDateFormat format= new SimpleDateFormat("dd/MM/yyyy");
+                        String fechaCal= format.format(calendario.getTime());
+                        tvFec.setText(fechaCal);
                     }
                 }, anio,mes,dia);
                 dpd.show();
@@ -142,10 +133,6 @@ public class AgregarRecordatorio extends AppCompatActivity {
                 anio=0;
                 mes=0;
                 dia=0;
-//              String anio1=String.valueOf(anio);
-//              String mes1=String.valueOf(mes);
-//              String dia1=String.valueOf(dia);
-//              tvFec.setText(anio1+mes1+dia1);
                 tvFec.setText("");
                 tvFec.setHint("No asignado");
             }
@@ -153,34 +140,19 @@ public class AgregarRecordatorio extends AppCompatActivity {
     }
 
     public void AgregarHora(View view){
-        Calendar calendario=Calendar.getInstance();
-        int hora= calendario.get(Calendar.HOUR_OF_DAY);
-        int min= calendario.get(Calendar.MINUTE);
+        int hora= actual.get(Calendar.HOUR_OF_DAY);
+        int min= actual.get(Calendar.MINUTE);
         if(view.getId()==R.id.switchHora){
             if(swHor.isChecked()){
                 TimePickerDialog tmd= new TimePickerDialog(AgregarRecordatorio.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour_of_day, int minute) {
-                        if(hour_of_day<=9){
-                            if(minute<=9){
-                                String fechaHor= "0" + hour_of_day + ":0" + minute ;
-                                tvHor.setText(fechaHor);
-                            }
-                            else{
-                                String fechaHor= "0" + hour_of_day + ":" + minute ;
-                                tvHor.setText(fechaHor);
-                            }
-                        }
-                        else{
-                            if(minute<=9){
-                                String fechaHor= hour_of_day + ":0" + minute ;
-                                tvHor.setText(fechaHor);
-                            }
-                            else{
-                                String fechaHor= hour_of_day + ":" + minute ;
-                                tvHor.setText(fechaHor);
-                            }
-                        }
+
+                        calendario.set(Calendar.HOUR_OF_DAY,hour_of_day);
+                        calendario.set(Calendar.MINUTE,minute);
+
+                        tvHor.setText(String.format("%02d:%02d",hour_of_day,minute));
+
                     }
                 },hora,min,false);
                 tmd.show();

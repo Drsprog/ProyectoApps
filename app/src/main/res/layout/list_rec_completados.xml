@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardRec"
+    android:id="@+id/cardRecComp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     app:cardCornerRadius="20dp"
     app:cardElevation="4dp"
-    android:paddingBottom="90dp"
     app:cardUseCompatPadding="true"
     android:layout_gravity="start"
     >
@@ -55,7 +54,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tvTituloReco"
+                        android:id="@+id/tvTituloRecoComp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
@@ -65,7 +64,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvFecRec"
+                        android:id="@+id/tvFecRecComp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Fecha"
@@ -74,25 +73,23 @@
             </RelativeLayout>
         </FrameLayout>
     </LinearLayout>
-
-
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="end">
-    <FrameLayout
-        android:layout_width="60dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true">
+        android:layout_gravity="end">
+        <FrameLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true">
 
-        <Button
-            android:id="@+id/btnCompletar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:background="@drawable/ic_baseline_check_box_outline_blank_24" />
-    </FrameLayout>
-</LinearLayout>
+            <Button
+                android:id="@+id/btnCompletarComp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:background="@drawable/ic_baseline_check_box_24" />
+        </FrameLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -44,7 +44,13 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         toolbar=findViewById(R.id.toolbar);
         btnAgregar=findViewById(R.id.btnAgregar);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.content,new Pagina_Principal()).commit();
+        String valor=getIntent().getStringExtra("valor");
+        if(valor!=null){
+            getSupportFragmentManager().beginTransaction().add(R.id.content,new CompletadosFragment()).commit();
+        }
+        else {
+            getSupportFragmentManager().beginTransaction().add(R.id.content,new Pagina_Principal()).commit();
+        }
         setTitle("Menú Principal");
 
         setSupportActionBar(toolbar);
@@ -116,9 +122,6 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.nav_atrasados:
                 ft.replace(R.id.content,new AtrasadosFragment()).commit();
-                break;
-            case R.id.nav_ajustes:
-                ft.replace(R.id.content,new AjustesFragment()).commit();
                 break;
             case R.id.nav_ayuda:
                 ft.replace(R.id.content,new AyudaFragment()).commit();
