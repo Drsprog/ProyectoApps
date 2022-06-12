@@ -15,6 +15,7 @@
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/editar_imagen.xml" value="0.1625" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.14" />
+        <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/ic_baseline_image_gray_24.xml" value="0.1" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.166" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.166" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.1075" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/list_recordatorio.xml" value="0.1" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/side_nav_bar.xml" value="0.159" />
+        <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/drawable/splash_screen.xml" value="0.1" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/layout/activity_agregar_recordatorio.xml" value="0.21" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/layout/activity_editar_recordatorio.xml" value="0.18" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/layout/activity_info_rec_comp.xml" value="0.15" />
@@ -63,6 +65,7 @@
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/menu/menu_recordatorio.xml" value="0.4579710144927536" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/menu/mod_perfil.xml" value="0.1361111111111111" />
         <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/menu/navigation_drawer.xml" value="0.33" />
+        <entry key="..\:/Users/USUARIO/Documents/Senati-2022-1/Desarrollo de APPS/Proyecto Final/app/src/main/res/mipmap-anydpi-v26/ic_rel_rec.xml" value="0.1" />
       </map>
     </option>
   </component>

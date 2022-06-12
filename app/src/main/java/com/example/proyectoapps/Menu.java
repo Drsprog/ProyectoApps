@@ -47,7 +47,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         String valor=getIntent().getStringExtra("valor");
         if(valor!=null){
             getSupportFragmentManager().beginTransaction().add(R.id.content,new CompletadosFragment()).commit();
-        }
+         }
         else {
             getSupportFragmentManager().beginTransaction().add(R.id.content,new Pagina_Principal()).commit();
         }

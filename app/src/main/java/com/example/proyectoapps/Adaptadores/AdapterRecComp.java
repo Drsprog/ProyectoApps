@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectoapps.EditarRecordatorio;
 import com.example.proyectoapps.InfoRecComp;
+import com.example.proyectoapps.Menu;
 import com.example.proyectoapps.Model.Recor;
 import com.example.proyectoapps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -89,7 +90,7 @@ public class AdapterRecComp extends RecyclerView.Adapter<AdapterRecComp.ViewHold
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
-                                    Intent intent= new Intent(holder.itemView.getContext(), EditarRecordatorio.class);
+                                    Intent intent= new Intent(holder.itemView.getContext(), Menu.class);
                                     model.remove(model.get(position));
                                     notifyDataSetChanged();
                                     Toast.makeText(view.getContext(), "Recordatorio completado",Toast.LENGTH_SHORT).show();
